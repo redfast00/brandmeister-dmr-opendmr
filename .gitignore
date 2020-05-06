@@ -1,3 +1,7 @@
-callrec
+dmr-brandmeister
 *.log
 config.json
+venv
+data/*
+md380tools/
+*_cert

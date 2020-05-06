@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+	"encoding/hex"
 )
 
 var callData struct {
@@ -175,14 +176,8 @@ func handleCmdErrPipe(pipe io.ReadCloser) {
 }
 
 func handleDMRAudioFrame(payload []byte) {
-	if callData.ongoing {
-		callData.lastFrameReceived = time.Now()
-		if callData.stdinPipe != nil {
-			callData.stdinPipe.Write(payload)
-		} else {
-			callData.outFile.Write(payload)
-		}
-	}
+	log.Println(hex.EncodeToString(payload))
+	fmt.Println(hex.EncodeToString(payload))
 }
 
 func handleCallEnd() {

@@ -10,8 +10,6 @@ import (
 var txSeqNum uint32
 
 func sendKeepalive(conn net.Conn) {
-	//log.Println("sending keepalive")
-
 	var rd rewindData
 	copy(rd.Sign[:], []byte(rewindProtocolSign))
 	rd.PacketType = rewindPacketTypeKeepAlive
@@ -21,7 +19,7 @@ func sendKeepalive(conn net.Conn) {
 
 	var rvd rewindVersionData
 	rvd.RemoteID = settings.AppID
-	rvd.RewindService = rewindServiceSimpleApplication
+	rvd.RewindService = rewindServiceOpenDmrTerminal
 	copy(rvd.Description[:], []byte(rewindVersionDescription))
 
 	var buf bytes.Buffer

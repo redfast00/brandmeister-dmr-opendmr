@@ -1,18 +1,25 @@
 {
-	"serverHost": "brandmeister.hu",
-	"serverPort": 54005,
-	"serverPassword": "",
+	"serverHost": "master.ham-dmr.be",
+	"serverPort": 54006,
+	"serverPassword": "Your hotspot password here",
 	"serverTimeoutSeconds": 12,
-	"appID": 1234,
-	"recTalkgroupID": 216,
+	"appID": <your user ID here>,
+	"recTalkgroupID": <TG you want to listen to here>,
 	"callHangTimeSeconds": 3,
-	"callExecCommand1": "",
+	"callExecCommand1": "cat",
 	"callExecCommand1ShowStderr": false,
 	"callExecCommand2": "",
 	"callExecCommand2ShowStderr": false,
 	"callExecCommand3": "",
 	"callExecCommand3ShowStderr": false,
-	"outputDir": "",
+	"outputDir": "test",
 	"outputFileExtension": "ambe",
-	"createDailyAggregateFile": true
+	"createDailyAggregateFile": true,
+	"mumble" : {
+		"server": "mumble.info",
+		"username": "DMR-bot",
+		"password": "mumble password",
+		"channel": "radio amateur",
+		"fifo": "/tmp/dmr.fifo"
+	}
 }

@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io"
+	// "io"
 	"log"
 	"net"
 	"os"
@@ -63,14 +63,11 @@ func handlePacket(conn net.Conn, p *udpPacket) bool {
 		log.Println("invalid payload length, dropping packet")
 		return false
 	}
-
 	switch rd.PacketType {
 	case rewindPacketTypeKeepAlive:
-		//log.Println("got keepalive response")
-
 		if !loggedIn {
 			// Requesting super headers.
-			sendConfiguration(conn, rewindOptionSuperHeader)
+			sendSubscription(conn, settings.RecTalkgroupID, rewindSessionTypeGroupVoice);
 		}
 	case rewindPacketTypeConfiguration:
 		log.Println("got configuration ack")
@@ -91,7 +88,7 @@ func handlePacket(conn net.Conn, p *udpPacket) bool {
 		loggedIn = false
 		sendChallengeResponse(conn, sha256.Sum256(append(payload, []byte(settings.ServerPassword)...)))
 	case rewindPacketTypeSuperHeader:
-		//log.Println("got super header")
+		log.Println("got super header")
 		var sh rewindSuperHeader
 		rb = bytes.NewReader(payload)
 		binary.Read(rb, binary.LittleEndian, &sh)
@@ -102,16 +99,17 @@ func handlePacket(conn net.Conn, p *udpPacket) bool {
 			handleCallStart(sh)
 		}
 	case rewindPacketTypeDMRTerminatorWithLC:
-		//log.Println("got dmr terminator with lc")
+		log.Println("got dmr terminator with lc")
 		handleCallEnd()
 	case rewindPacketTypeFailureCode:
 		log.Println("got failure code: ", pl)
 	case rewindPacketTypeDMRAudioFrame:
-		//log.Println("got dmr audio frame")
+		log.Println("got dmr audio frame")
 		handleDMRAudioFrame(payload)
 	case rewindPacketTypeClose:
 		log.Fatal("got close request")
 	default:
+		log.Println("Got unrecognised: ", rd.PacketType)
 		return false
 	}
 	return true
@@ -122,14 +120,6 @@ func main() {
 
 	flag.StringVar(&configFileName, "c", configFileName, "config file to use, default: config.json")
 	flag.Parse()
-
-	logFile, err := os.OpenFile("callrec.log", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-	if err != nil {
-		log.Println("warning: can't open callrec.log for writing: ", err)
-	} else {
-		defer logFile.Close()
-		log.SetOutput(io.MultiWriter(os.Stdout, logFile))
-	}
 
 	cf, err := os.Open(configFileName)
 	if err != nil {
