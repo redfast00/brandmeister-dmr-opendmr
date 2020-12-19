@@ -12,6 +12,8 @@ massive amounts of concurrent users.
 
 See [this blogpost](https://redfast00.github.io/05-06-2020/building-a-brandmeister-dmr-bridge.html) for a writeup.
 
+See also [brandmeister-dmr-sea](https://github.com/redfast00/brandmeister-dmr-sea). That codebase is easier to set up, cleaner and should be used if at all possible instead of this one.
+
 ## Command
 
 Stream Talkgroup audio to a fifo:

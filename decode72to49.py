@@ -230,5 +230,8 @@ if __name__ == '__main__':
         line = line.rstrip()
         parts = [line[:2*9], line[2*9:4*9], line[4*9:]]
         for part in parts:
-            print(ahex(convert72BitTo49BitAMBE(BitArray("0x" + part))))
+            try:
+                print(ahex(convert72BitTo49BitAMBE(BitArray("0x" + part))))
+            except:
+                raise ValueError(part)
             sys.stdout.flush()
